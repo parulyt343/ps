@@ -615,9 +615,9 @@
       </video>
     </div>
 
-    
+    <canvas id="confetti-canvas"></canvas>
     <div class="ribbon">Father's Day 2025</div>
-    <h1 class="hero-title fade-up">Happy Father's<br><span>Day, Papa!</span> 🎉</h1>
+    <h1 class="hero-title fade-up">Happy Father's<br><span>Day, Dad!</span> 🎉</h1>
     <p class="hero-sub fade-up">You're not just my dad — you're my hero, my guide, and my favourite person to call when everything goes sideways. ❤️</p>
     <div class="hero-badge fade-up">✦ Made with all the love in the world ✦</div>
   </section>
@@ -1002,6 +1002,11 @@ function startConfetti() {
 
 /* ══════════════════════════════════════════════════════
    TYPEWRITER LETTER
+   FIX: With threshold:0.3, if the letter section is
+   already partially in view when the observer attaches
+   (e.g. on a tall screen), the callback never fires.
+   Using threshold:0 and immediately checking
+   isIntersecting after connecting fixes this.
    ✏️ CUSTOMIZE: Edit the letter text below
 ══════════════════════════════════════════════════════ */
 function startTypewriter() {
@@ -1021,6 +1026,7 @@ So today I just want to say: thank you. For everything visible, and everything i
 I love you more than any card, website, or gift could ever say.`;
 
   let i = 0;
+  let started = false;
   el.style.whiteSpace = 'pre-wrap';
 
   function type() {
@@ -1033,10 +1039,22 @@ I love you more than any card, website, or gift could ever say.`;
     }
   }
 
+  function tryStart() {
+    if (started) return;
+    started = true;
+    type();
+  }
+
+  // threshold:0 fires as soon as even 1px is visible
   const obs = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting) { type(); obs.disconnect(); }
-  }, { threshold: 0.3 });
+    if (entries[0].isIntersecting) { tryStart(); obs.disconnect(); }
+  }, { threshold: 0 });
+
   obs.observe(document.getElementById('letter-section'));
+
+  // Fallback: if section is already in view when this runs, start immediately
+  const rect = document.getElementById('letter-section').getBoundingClientRect();
+  if (rect.top < window.innerHeight && rect.bottom > 0) tryStart();
 }
 
 const styleTag = document.createElement('style');
@@ -1046,19 +1064,30 @@ document.head.appendChild(styleTag);
 
 /* ══════════════════════════════════════════════════════
    SCRATCH CARD
+   FIX: #main-site is visibility:hidden when initScratch()
+   is first called, so offsetWidth/offsetHeight = 0 and
+   the canvas draws nothing. We defer setSize() until the
+   scratch section actually enters the viewport (i.e. the
+   user has scrolled to it and the element has real dimensions).
 ══════════════════════════════════════════════════════ */
 function initScratch() {
   const canvas = document.getElementById('scratch-canvas');
   const reveal = document.getElementById('scratch-reveal');
+  let sized = false;
 
   function setSize() {
-    canvas.width = reveal.offsetWidth;
-    canvas.height = reveal.offsetHeight;
+    const w = reveal.offsetWidth;
+    const h = reveal.offsetHeight;
+    if (w === 0 || h === 0) return; // still hidden — skip
+    canvas.width = w;
+    canvas.height = h;
+    sized = true;
     drawLayer();
   }
 
   function drawLayer() {
     const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     const grd = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
     grd.addColorStop(0, '#C8950A');
     grd.addColorStop(0.5, '#F5C842');
@@ -1074,8 +1103,15 @@ function initScratch() {
     ctx.fillText('🎁 Scratch Me! 🎁', canvas.width / 2, canvas.height / 2);
   }
 
-  setSize();
-  window.addEventListener('resize', setSize);
+  // Wait until scratch section scrolls into view before sizing
+  const sizeObserver = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting && !sized) {
+      setSize();
+    }
+  }, { threshold: 0.1 });
+  sizeObserver.observe(document.getElementById('scratch-section'));
+
+  window.addEventListener('resize', () => { if (sized) setSize(); });
 
   const ctx = canvas.getContext('2d');
   let scratching = false, totalScratched = 0;
