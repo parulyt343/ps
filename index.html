@@ -539,7 +539,7 @@
   and the 🎵 button toggles it on/off.
 -->
 <audio id="bg-audio" loop preload="auto">
-  <source src="/audio.mp3" type="audio/mpeg">
+  <source src="audio.mp3" type="audio/mpeg">
 </audio>
 
 
@@ -860,12 +860,64 @@ function startHeroVideo() {
 
 
 /* ══════════════════════════════════════════════════════
+   BACKGROUND AUDIO
+   The MP3 autoplays (looped) when the envelope opens.
+   The 🎵 button toggles pause/resume.
+
+   ✏️ CUSTOMIZE: Set the src in the <audio> tag in the
+   HTML — search for "YOUR_SONG_HERE.mp3"
+
+   WHY THIS WORKS ON GITHUB PAGES:
+   Browsers (Chrome, Safari, Firefox) block audio.play()
+   if it isn't called synchronously inside a user-gesture
+   handler. A setTimeout — even 1ms — breaks that chain.
+   The fix: call bgAudio.play() IMMEDIATELY on the click
+   (synchronously), then pause+seek to 0 right away. This
+   "unlocks" the audio element. Later, when we actually
+   want it to play, a second .play() call is always
+   allowed because the element is already unlocked.
+══════════════════════════════════════════════════════ */
+const bgAudio = document.getElementById('bg-audio');
+bgAudio.volume = 0.55; // 0.0 (silent) → 1.0 (full) — adjust to taste
+
+function unlockAudio() {
+  // Called synchronously inside the click — unlocks the element
+  bgAudio.play().then(() => {
+    bgAudio.pause();
+    bgAudio.currentTime = 0;
+  }).catch(() => {});
+}
+
+function startBgAudio() {
+  // Safe to call inside setTimeout now because element is already unlocked
+  bgAudio.play().then(() => {
+    document.getElementById('music-btn').classList.add('playing');
+  }).catch(() => {
+    console.log('Audio still blocked — user can tap 🎵 to start manually.');
+  });
+}
+
+document.getElementById('music-btn').addEventListener('click', () => {
+  if (bgAudio.paused) {
+    bgAudio.play();
+    document.getElementById('music-btn').classList.add('playing');
+  } else {
+    bgAudio.pause();
+    document.getElementById('music-btn').classList.remove('playing');
+  }
+});
+
+
+/* ══════════════════════════════════════════════════════
    ENVELOPE OPEN
    Triggers: video, music autoplay, confetti, all sections
 ══════════════════════════════════════════════════════ */
 function openEnvelope() {
   const wrap = document.getElementById('envelope-wrap');
   if (wrap.classList.contains('open')) return;
+
+  // ← UNLOCK AUDIO HERE, synchronously inside the click gesture
+  unlockAudio();
 
   wrap.classList.add('shaking');
   setTimeout(() => {
@@ -882,7 +934,7 @@ function openEnvelope() {
 
       // Start all the good stuff
       startHeroVideo();   // 🎬 video background
-      startBgAudio();     // 🎵 music autoplay
+      startBgAudio();     // 🎵 music (safe now — already unlocked above)
       startConfetti();    // 🎉 confetti
       initScratch();      // 🎁 scratch card
       startTypewriter();  // ✍️  letter
@@ -894,41 +946,6 @@ function openEnvelope() {
 
 document.getElementById('envelope-wrap').addEventListener('keydown', e => {
   if (e.key === 'Enter' || e.key === ' ') openEnvelope();
-});
-
-
-/* ══════════════════════════════════════════════════════
-   BACKGROUND AUDIO — AUTOPLAY
-   The MP3 autoplays (looped) when the envelope opens.
-   The 🎵 button toggles pause/resume.
-
-   ✏️ CUSTOMIZE: Set the src in the <audio> tag at the
-   top of the HTML — search for "YOUR_SONG_HERE.mp3"
-══════════════════════════════════════════════════════ */
-const bgAudio = document.getElementById('bg-audio');
-
-function startBgAudio() {
-  bgAudio.volume = 0.55; // 0.0 (silent) → 1.0 (full) — adjust to taste
-  const playPromise = bgAudio.play();
-  if (playPromise !== undefined) {
-    playPromise.then(() => {
-      document.getElementById('music-btn').classList.add('playing');
-    }).catch(() => {
-      // Autoplay blocked by browser (requires user gesture).
-      // User can still tap 🎵 to start manually.
-      console.log('Autoplay blocked — user can tap 🎵 to start music.');
-    });
-  }
-}
-
-document.getElementById('music-btn').addEventListener('click', () => {
-  if (bgAudio.paused) {
-    bgAudio.play();
-    document.getElementById('music-btn').classList.add('playing');
-  } else {
-    bgAudio.pause();
-    document.getElementById('music-btn').classList.remove('playing');
-  }
 });
 
 
