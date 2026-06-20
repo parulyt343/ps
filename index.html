@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Father's Day, Dad! 💛</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #1A1F3C;
+    --gold: #F5C842;
+    --gold-dark: #D4A017;
+    --cream: #FFF8E7;
+    --blush: #FFD6D6;
+    --warm-white: #FFFDF5;
+    --text-dark: #2C2517;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--navy);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* ─── PARTICLES ─── */
+  #particles-canvas {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ─── ENVELOPE SCREEN ─── */
+  #envelope-screen {
+    position: fixed; inset: 0;
+    background: linear-gradient(135deg, #0D1225 0%, #1A1F3C 50%, #2A1F3C 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    z-index: 100;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+
+  #envelope-screen.hide {
+    opacity: 0; visibility: hidden;
+  }
+
+  .env-hint {
+    font-family: 'Playfair Display', serif;
+    color: rgba(245,200,66,0.7);
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    letter-spacing: 0.08em;
+    margin-bottom: 2.5rem;
+    animation: pulse-hint 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-hint {
+    0%, 100% { opacity: 0.5; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-4px); }
+  }
+
+  /* ─── ENVELOPE SVG WRAPPER ─── */
+  #envelope-wrap {
+    cursor: pointer;
+    position: relative;
+    width: clamp(180px, 50vw, 320px);
+    user-select: none;
+    filter: drop-shadow(0 20px 60px rgba(245,200,66,0.25));
+    transition: transform 0.3s ease;
+  }
+
+  #envelope-wrap:hover { transform: scale(1.04); }
+  #envelope-svg { width: 100%; height: auto; overflow: visible; }
+
+  #env-flap {
+    transform-origin: top center;
+    transform-box: fill-box;
+    transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  #envelope-wrap.open #env-flap {
+    transform: rotateX(180deg);
+  }
+
+  #env-letter {
+    transform: translateY(40px);
+    opacity: 0;
+    transition: transform 0.7s 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.5s 0.4s;
+  }
+
+  #envelope-wrap.open #env-letter {
+    transform: translateY(-30px);
+    opacity: 1;
+  }
+
+  @keyframes seal-crack {
+    0%,100% { transform: rotate(0deg); }
+    20% { transform: rotate(-6deg); }
+    40% { transform: rotate(6deg); }
+    60% { transform: rotate(-4deg); }
+    80% { transform: rotate(4deg); }
+  }
+
+  #envelope-wrap.shaking #env-seal {
+    animation: seal-crack 0.4s ease;
+  }
+
+  .env-tap-text {
+    font-family: 'Playfair Display', serif;
+    color: rgba(245,200,66,0.85);
+    font-size: clamp(0.85rem, 2.5vw, 1rem);
+    margin-top: 2rem;
+    letter-spacing: 0.05em;
+    text-align: center;
+  }
+
+  /* ─── MAIN SITE ─── */
+  #main-site {
+    opacity: 0; visibility: hidden;
+    transition: opacity 1s ease 0.3s;
+  }
+
+  #main-site.show {
+    opacity: 1; visibility: visible;
+  }
+
+  /* ─── MUSIC BTN ─── */
+  #music-btn {
+    position: fixed; top: 1rem; right: 1rem;
+    background: rgba(245,200,66,0.15);
+    border: 1.5px solid rgba(245,200,66,0.4);
+    border-radius: 50%;
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 50;
+    font-size: 1.3rem;
+    transition: background 0.3s, transform 0.2s;
+  }
+  #music-btn:hover { background: rgba(245,200,66,0.3); transform: scale(1.1); }
+  #music-btn.playing { animation: spin-note 2s ease-in-out infinite; }
+  @keyframes spin-note {
+    0%,100% { transform: scale(1) rotate(-8deg); }
+    50% { transform: scale(1.12) rotate(8deg); }
+  }
+
+  /* ─── SECTION BASE ─── */
+  section {
+    position: relative;
+    padding: clamp(3rem, 8vw, 6rem) clamp(1.2rem, 5vw, 4rem);
+    overflow: hidden;
+  }
+
+  /* ════════════════════════════════════════════
+     HERO SECTION — VIDEO BACKGROUND
+  ════════════════════════════════════════════ */
+  #hero {
+    min-height: 100vh;
+    background: linear-gradient(160deg, #0D1225 0%, #1A1F3C 60%, #251A3C 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    gap: 1.5rem;
+    position: relative;
+  }
+
+  /* Video background container */
+  #hero-video-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  /* Both videos sit on top of each other; JS shows the right one */
+  #hero-video-bg video {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: none; /* hidden until envelope opens */
+    opacity: 0;
+    transition: opacity 1.2s ease;
+  }
+
+  #hero-video-bg video.active {
+    display: block;
+  }
+
+  #hero-video-bg video.visible {
+    opacity: 1;
+  }
+
+  /* Dark overlay so text stays readable over the video */
+  #hero-video-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(10, 12, 30, 0.52);
+    z-index: 1;
+  }
+
+  /* All hero text/content must sit above the video overlay */
+  #hero > *:not(#hero-video-bg) { position: relative; z-index: 2; }
+
+  /* ─── HERO TEXT ─── */
+  .ribbon {
+    background: var(--gold);
+    color: var(--navy);
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: clamp(0.65rem, 2vw, 0.8rem);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.4rem 1.4rem;
+    border-radius: 2px;
+    position: relative;
+  }
+  .ribbon::before, .ribbon::after {
+    content: '';
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+    width: 0; height: 0;
+  }
+  .ribbon::before { left: -10px; border: 12px solid transparent; border-right-color: var(--gold); border-left: 0; }
+  .ribbon::after { right: -10px; border: 12px solid transparent; border-left-color: var(--gold); border-right: 0; }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 7vw, 4.5rem);
+    color: var(--cream);
+    line-height: 1.15;
+    text-shadow: 0 4px 30px rgba(245,200,66,0.2);
+  }
+
+  .hero-title span { color: var(--gold); }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: rgba(255,248,231,0.85);
+    max-width: 560px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    border: 1.5px solid rgba(245,200,66,0.35);
+    border-radius: 100px;
+    padding: 0.5rem 1.4rem;
+    color: rgba(245,200,66,0.8);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    margin-top: 0.5rem;
+  }
+
+  #confetti-canvas {
+    position: absolute; inset: 0;
+    pointer-events: none; z-index: 1;
+  }
+
+  /* ─── REASONS SECTION ─── */
+  #reasons { background: var(--cream); }
+
+  .section-eyebrow {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin-bottom: 0.6rem;
+    text-align: center;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4.5vw, 2.8rem);
+    text-align: center;
+    color: var(--navy);
+    margin-bottom: 2.5rem;
+    line-height: 1.2;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  .reason-card {
+    background: #fff;
+    border: 1.5px solid rgba(245,200,66,0.3);
+    border-radius: 16px;
+    padding: 1.6rem 1.4rem;
+    text-align: center;
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s, border-color 0.3s;
+  }
+
+  .reason-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 16px 48px rgba(212,160,23,0.18);
+    border-color: var(--gold);
+  }
+
+  .reason-card .icon { font-size: 2.4rem; margin-bottom: 0.8rem; display: block; }
+  .reason-card h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--navy); margin-bottom: 0.5rem; }
+  .reason-card p { font-size: 0.88rem; color: #666; line-height: 1.6; }
+
+  /* ─── MEMORIES ─── */
+  #memories { background: var(--navy); text-align: center; }
+  #memories .section-title { color: var(--cream); }
+  #memories .section-eyebrow { color: rgba(245,200,66,0.7); }
+
+  .memories-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    max-width: 900px;
+    margin: 0 auto 1.2rem;
+  }
+
+  .memory-box {
+    aspect-ratio: 4/3;
+    border: 2px dashed rgba(245,200,66,0.35);
+    border-radius: 12px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 0.5rem;
+    color: rgba(245,200,66,0.5);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    background: rgba(245,200,66,0.04);
+    transition: border-color 0.3s, background 0.3s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .memory-box img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    display: none;
+  }
+
+  .memory-box input[type="file"] {
+    position: absolute; inset: 0;
+    opacity: 0; cursor: pointer; width: 100%; height: 100%;
+  }
+
+  .memory-box:hover { border-color: var(--gold); background: rgba(245,200,66,0.08); }
+  .memory-cam { font-size: 2rem; }
+  .memories-note { font-size: 0.78rem; color: rgba(255,248,231,0.35); font-style: italic; }
+
+  /* ─── LETTER ─── */
+  #letter-section { background: #F5EDD8; display: flex; justify-content: center; }
+
+  .letter-paper {
+    background: #FFFDF0;
+    border-radius: 4px;
+    padding: clamp(2rem, 6vw, 3.5rem);
+    max-width: 680px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+    border-left: 4px solid var(--gold);
+  }
+
+  .letter-paper::before {
+    content: '';
+    position: absolute;
+    top: -12px; left: 0; right: 0;
+    height: 14px;
+    background: repeating-linear-gradient(-60deg, #F5EDD8 0px, #F5EDD8 6px, transparent 6px, transparent 12px);
+  }
+
+  .letter-date { font-size: 0.82rem; color: #999; margin-bottom: 1.5rem; font-style: italic; }
+
+  .letter-body {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(0.95rem, 2.2vw, 1.1rem);
+    line-height: 1.9;
+    color: #3A2E1E;
+    min-height: 80px;
+  }
+
+  .letter-body::after {
+    content: '|';
+    animation: blink 1s step-start infinite;
+    color: var(--gold-dark);
+    font-weight: 300;
+  }
+
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+  .letter-sig { margin-top: 2rem; font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--navy); font-style: italic; }
+
+  /* ─── SCRATCH CARD ─── */
+  #scratch-section { background: var(--cream); text-align: center; }
+
+  .scratch-wrap {
+    display: inline-block;
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: crosshair;
+    margin-top: 1.5rem;
+    box-shadow: 0 8px 32px rgba(26,31,60,0.18);
+  }
+
+  #scratch-reveal {
+    width: clamp(260px, 80vw, 380px);
+    height: clamp(100px, 25vw, 140px);
+    background: linear-gradient(135deg, #1A1F3C, #2A1F3C);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 0.4rem;
+  }
+
+  #scratch-reveal p {
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    text-align: center;
+    padding: 0 1rem;
+    line-height: 1.4;
+  }
+
+  #scratch-reveal .scratch-icon { font-size: 2rem; }
+  #scratch-canvas { position: absolute; inset: 0; border-radius: 16px; }
+  .scratch-hint { font-size: 0.82rem; color: #888; margin-top: 0.8rem; font-style: italic; }
+
+  /* ─── TIMELINE ─── */
+  #timeline-section { background: var(--navy); }
+  #timeline-section .section-title { color: var(--cream); }
+  #timeline-section .section-eyebrow { color: rgba(245,200,66,0.65); }
+
+  .timeline {
+    max-width: 640px;
+    margin: 0 auto;
+    position: relative;
+    padding-left: clamp(2rem, 6vw, 3rem);
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px; bottom: 8px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--gold), rgba(245,200,66,0.1));
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 2rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .tl-item.visible { opacity: 1; transform: translateX(0); }
+
+  .tl-dot {
+    position: absolute;
+    left: calc(-1 * clamp(2rem, 6vw, 3rem) - 5px);
+    top: 6px;
+    width: 12px; height: 12px;
+    background: var(--gold);
+    border-radius: 50%;
+    border: 2px solid var(--navy);
+    box-shadow: 0 0 0 3px rgba(245,200,66,0.3);
+  }
+
+  .tl-year { font-size: 0.75rem; color: var(--gold); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.25rem; }
+  .tl-text { font-family: 'Playfair Display', serif; font-size: clamp(0.95rem, 2.5vw, 1.1rem); color: rgba(255,248,231,0.85); line-height: 1.6; }
+
+  /* ─── FOOTER ─── */
+  #footer { background: #090D1A; text-align: center; padding: 3rem 1.5rem; position: relative; overflow: hidden; }
+  #footer .big-heart { font-size: clamp(2.5rem, 8vw, 4rem); display: block; margin-bottom: 1rem; animation: heartbeat 1.4s ease-in-out infinite; }
+
+  @keyframes heartbeat {
+    0%,100% { transform: scale(1); }
+    14% { transform: scale(1.15); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.1); }
+    56% { transform: scale(1); }
+  }
+
+  #footer p { font-family: 'Playfair Display', serif; color: rgba(255,248,231,0.65); font-size: clamp(1rem, 2.5vw, 1.2rem); font-style: italic; }
+  #footer .footer-name { color: var(--gold); font-weight: 600; font-style: normal; }
+
+  .balloons { position: absolute; bottom: 0; left: 0; right: 0; pointer-events: none; }
+  .balloon { position: absolute; bottom: -60px; font-size: clamp(1.4rem, 4vw, 2rem); animation: float-up linear infinite; }
+
+  @keyframes float-up {
+    0% { transform: translateY(0) rotate(-5deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 0.6; }
+    100% { transform: translateY(-120vh) rotate(5deg); opacity: 0; }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 480px) {
+    .ribbon::before, .ribbon::after { display: none; }
+    .cards-grid { grid-template-columns: 1fr 1fr; }
+    .memories-strip { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 360px) {
+    .cards-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ─── SCROLL ANIMATIONS ─── */
+  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<canvas id="particles-canvas"></canvas>
+
+<!-- ════════════════════════════════════════════
+     🎵 MUSIC BUTTON
+     The audio element below will autoplay the
+     MP3 once the user opens the envelope.
+════════════════════════════════════════════ -->
+<button id="music-btn" title="Toggle music" aria-label="Toggle music">🎵</button>
+
+<!--
+  ✏️ CUSTOMIZE — YOUR MP3 FILE
+  Replace the `src` below with the path to your MP3 file.
+  Example: If your file is called "song.mp3" and sits next
+  to this HTML file, just write: src="song.mp3"
+  The music will autoplay (looped) when the envelope opens,
+  and the 🎵 button toggles it on/off.
+-->
+<audio id="bg-audio" loop preload="auto">
+  <source src="_Tujhko_Na_Dekhun_Ringtone_(by Fringster.com).mp3" type="audio/mpeg">
+</audio>
+
+
+<!-- ═══════════════════════════════
+     ENVELOPE SCREEN
+═══════════════════════════════ -->
+<div id="envelope-screen">
+  <p class="env-hint">✦ A surprise is waiting for you ✦</p>
+
+  <div id="envelope-wrap" onclick="openEnvelope()" role="button" tabindex="0" aria-label="Open the envelope">
+    <svg id="envelope-svg" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg">
+      <g id="env-letter">
+        <rect x="60" y="80" width="200" height="110" rx="4" fill="#FFFDF0"/>
+        <line x1="85" y1="115" x2="235" y2="115" stroke="#E8D8A0" stroke-width="1.5"/>
+        <line x1="85" y1="130" x2="235" y2="130" stroke="#E8D8A0" stroke-width="1.5"/>
+        <line x1="85" y1="145" x2="190" y2="145" stroke="#E8D8A0" stroke-width="1.5"/>
+        <text x="160" y="105" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#C8A850">Dear Dad 💛</text>
+      </g>
+      <rect x="30" y="90" width="260" height="130" rx="6" fill="#F5EDD8" stroke="#D4C080" stroke-width="1.5"/>
+      <polygon points="30,220 160,155 290,220" fill="#EDE0C0"/>
+      <line x1="30" y1="220" x2="160" y2="155" stroke="#D4C080" stroke-width="1"/>
+      <line x1="290" y1="220" x2="160" y2="155" stroke="#D4C080" stroke-width="1"/>
+      <polygon points="30,90 30,220 120,155" fill="#EAD8B0"/>
+      <polygon points="290,90 290,220 200,155" fill="#EAD8B0"/>
+      <polygon id="env-flap" points="30,90 160,165 290,90" fill="#F0E4C0" stroke="#D4C080" stroke-width="1.5"/>
+      <g id="env-seal">
+        <circle cx="160" cy="155" r="22" fill="#C0392B"/>
+        <circle cx="160" cy="155" r="18" fill="#A93226"/>
+        <circle cx="160" cy="155" r="14" fill="#C0392B" stroke="#8B1A1A" stroke-width="1"/>
+        <text x="160" y="161" text-anchor="middle" font-size="16" fill="#F5C842">♛</text>
+      </g>
+    </svg>
+    <p class="env-tap-text">Tap the envelope to open your surprise, Dad 💛</p>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════
+     MAIN WEBSITE
+═══════════════════════════════ -->
+<div id="main-site">
+
+  <!-- ════════════════════════════════════════════
+       HERO SECTION
+       Video backgrounds are inside #hero-video-bg.
+       Desktop video plays on screens ≥ 768px wide.
+       Mobile video plays on screens < 768px wide.
+       Both are hidden until the envelope opens.
+  ════════════════════════════════════════════ -->
+  <section id="hero">
+
+    <div id="hero-video-bg">
+      <!--
+        ✏️ CUSTOMIZE — DESKTOP VIDEO
+        Replace src="YOUR_DESKTOP_VIDEO.mp4" with your
+        landscape/desktop MP4 file path.
+        Example: src="landscape.mp4"
+        This video plays on screens 768px wide and above.
+      -->
+      <video id="video-desktop" playsinline muted loop>
+        <source src="Landscape (1).mp4" type="video/mp4">
+      </video>
+
+      <!--
+        ✏️ CUSTOMIZE — MOBILE VIDEO
+        Replace src="YOUR_MOBILE_VIDEO.mp4" with your
+        portrait/mobile MP4 file path.
+        Example: src="portrait.mp4"
+        This video plays on screens narrower than 768px.
+      -->
+      <video id="video-mobile" playsinline muted loop>
+        <source src="portrait (1).mp4" type="video/mp4">
+      </video>
+    </div>
+
+    
+    <div class="ribbon">Father's Day 2025</div>
+    <h1 class="hero-title fade-up">Happy Father's<br><span>Day, Dad!</span> 🎉</h1>
+    <p class="hero-sub fade-up">You're not just my dad — you're my hero, my guide, and my favourite person to call when everything goes sideways. ❤️</p>
+    <div class="hero-badge fade-up">✦ Made with all the love in the world ✦</div>
+  </section>
+
+  <!-- REASONS -->
+  <section id="reasons">
+    <p class="section-eyebrow fade-up">Counting the reasons</p>
+    <h2 class="section-title fade-up">Why You're the Best Dad 🏆</h2>
+    <div class="cards-grid">
+      <div class="reason-card fade-up">
+        <span class="icon">🧭</span>
+        <h3>My compass</h3>
+        <p>Whenever I'm lost, your wisdom always points me in the right direction.</p>
+      </div>
+      <div class="reason-card fade-up">
+        <span class="icon">🛠️</span>
+        <h3>My fixer</h3>
+        <p>There's nothing you can't repair — from broken things to broken days.</p>
+      </div>
+      <div class="reason-card fade-up">
+        <span class="icon">🤗</span>
+        <h3>Warmest hugs</h3>
+        <p>Your hugs are still the safest place in the world. They fix everything.</p>
+      </div>
+      <div class="reason-card fade-up">
+        <span class="icon">😂</span>
+        <h3>Best bad jokes</h3>
+        <p>Your jokes are terrible — and somehow that makes them even better.</p>
+      </div>
+      <div class="reason-card fade-up">
+        <span class="icon">🌙</span>
+        <h3>Always there</h3>
+        <p>At 3 AM or 3 PM, you always pick up the phone. Always.</p>
+      </div>
+      <div class="reason-card fade-up">
+        <span class="icon">⭐</span>
+        <h3>My biggest fan</h3>
+        <p>You've cheered the loudest at every little win throughout my life.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMORIES -->
+  <section id="memories">
+    <p class="section-eyebrow fade-up">📸 Tap to add a photo</p>
+    <h2 class="section-title fade-up">Our Favourite Memories</h2>
+    <div class="memories-strip">
+      <div class="memory-box fade-up" onclick="this.querySelector('input').click()">
+        <span class="memory-cam">📷</span>
+        <span>Add a memory</span>
+        <input type="file" accept="image/*" onchange="loadMemory(this)">
+        <img alt="memory">
+      </div>
+      <div class="memory-box fade-up" onclick="this.querySelector('input').click()">
+        <span class="memory-cam">📷</span>
+        <span>Add a memory</span>
+        <input type="file" accept="image/*" onchange="loadMemory(this)">
+        <img alt="memory">
+      </div>
+      <div class="memory-box fade-up" onclick="this.querySelector('input').click()">
+        <span class="memory-cam">📷</span>
+        <span>Add a memory</span>
+        <input type="file" accept="image/*" onchange="loadMemory(this)">
+        <img alt="memory">
+      </div>
+      <div class="memory-box fade-up" onclick="this.querySelector('input').click()">
+        <span class="memory-cam">📷</span>
+        <span>Add a memory</span>
+        <input type="file" accept="image/*" onchange="loadMemory(this)">
+        <img alt="memory">
+      </div>
+    </div>
+    <p class="memories-note fade-up">Click a frame to add your favourite family photos</p>
+  </section>
+
+  <!-- LETTER -->
+  <section id="letter-section">
+    <div class="letter-paper fade-up">
+      <p class="letter-date">June 15, 2025</p>
+      <div class="letter-body" id="letter-text"></div>
+      <p class="letter-sig">With all my love, Your Child 💛</p>
+    </div>
+  </section>
+
+  <!-- SCRATCH CARD -->
+  <section id="scratch-section">
+    <p class="section-eyebrow fade-up">🎁 A little something extra</p>
+    <h2 class="section-title fade-up">Scratch to Reveal Your Gift!</h2>
+    <div class="scratch-wrap fade-up">
+      <div id="scratch-reveal">
+        <span class="scratch-icon">👑</span>
+        <p>A whole day of doing absolutely nothing — by your royal orders, Dad!</p>
+      </div>
+      <canvas id="scratch-canvas"></canvas>
+    </div>
+    <p class="scratch-hint fade-up">Use your finger or mouse to scratch</p>
+  </section>
+
+  <!-- TIMELINE -->
+  <section id="timeline-section">
+    <p class="section-eyebrow fade-up">Through the years</p>
+    <h2 class="section-title fade-up">Moments That Made Us ✨</h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <p class="tl-year">The Beginning</p>
+        <p class="tl-text">You became a dad — and nothing was ever the same again. The world got a little warmer that day.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <p class="tl-year">Growing Up</p>
+        <p class="tl-text">Every lesson, every bedtime story, every time you held my hand crossing the street. I was learning from the best.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <p class="tl-year">The Hard Times</p>
+        <p class="tl-text">You never let me face anything alone. Even when I was too proud to ask, you were already there.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <p class="tl-year">Right Now</p>
+        <p class="tl-text">I look at you and see everything I want to become. Thank you for being the greatest man I know.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <p class="tl-year">Always & Forever</p>
+        <p class="tl-text">No matter where life takes me, you'll always be the one I call home. Happy Father's Day. 💛</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <span class="big-heart">💛</span>
+    <p>Made with every bit of love I have, just for you, <span class="footer-name">Dad</span>.</p>
+    <br>
+    <p style="font-size:0.8rem; margin-top:0.8rem; color:rgba(255,255,255,0.2);">
+      ✦ Customize: replace video paths, MP3 path, letter text, and your name ✦
+    </p>
+    <div class="balloons" id="balloons-container"></div>
+  </footer>
+
+</div><!-- end main-site -->
+
+
+<script>
+/* ══════════════════════════════════════════════════════
+   PARTICLES (background stars on envelope screen)
+══════════════════════════════════════════════════════ */
+(function() {
+  const c = document.getElementById('particles-canvas');
+  const ctx = c.getContext('2d');
+  let pts = [];
+
+  function resize() {
+    c.width = window.innerWidth;
+    c.height = window.innerHeight;
+    pts = [];
+    const n = Math.floor((c.width * c.height) / 9000);
+    for (let i = 0; i < n; i++) {
+      pts.push({
+        x: Math.random() * c.width,
+        y: Math.random() * c.height,
+        r: Math.random() * 1.4 + 0.3,
+        o: Math.random(),
+        s: (Math.random() - 0.5) * 0.3,
+        vy: -Math.random() * 0.15 - 0.05
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, c.width, c.height);
+    pts.forEach(p => {
+      p.o += p.s * 0.015;
+      if (p.o > 1 || p.o < 0) p.s *= -1;
+      p.y += p.vy;
+      if (p.y < -5) p.y = c.height + 5;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(245,200,66,${p.o * 0.7})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  draw();
+})();
+
+
+/* ══════════════════════════════════════════════════════
+   VIDEO BACKGROUND
+   Detects screen width and plays the correct video.
+   Desktop  = window.innerWidth >= 768
+   Mobile   = window.innerWidth <  768
+   Called once when the envelope opens.
+══════════════════════════════════════════════════════ */
+function startHeroVideo() {
+  const isMobile = window.innerWidth < 768;
+  const videoDesktop = document.getElementById('video-desktop');
+  const videoMobile  = document.getElementById('video-mobile');
+
+  // Pick the right video for the current screen size
+  const activeVideo = isMobile ? videoMobile : videoDesktop;
+  activeVideo.classList.add('active');
+
+  // Play the video, then fade it in once it's ready
+  const playPromise = activeVideo.play();
+  if (playPromise !== undefined) {
+    playPromise.then(() => {
+      setTimeout(() => activeVideo.classList.add('visible'), 100);
+    }).catch(() => {
+      // Autoplay blocked — video still shows as background image fallback
+      activeVideo.classList.add('visible');
+    });
+  }
+
+  // Handle window resize: swap videos if user rotates phone
+  let currentIsMobile = isMobile;
+  window.addEventListener('resize', () => {
+    const nowMobile = window.innerWidth < 768;
+    if (nowMobile === currentIsMobile) return;
+    currentIsMobile = nowMobile;
+
+    const old = nowMobile ? videoDesktop : videoMobile;
+    const fresh = nowMobile ? videoMobile : videoDesktop;
+
+    old.classList.remove('active', 'visible');
+    old.pause();
+
+    fresh.classList.add('active');
+    const p = fresh.play();
+    if (p !== undefined) {
+      p.then(() => setTimeout(() => fresh.classList.add('visible'), 100)).catch(() => fresh.classList.add('visible'));
+    }
+  });
+}
+
+
+/* ══════════════════════════════════════════════════════
+   ENVELOPE OPEN
+   Triggers: video, music autoplay, confetti, all sections
+══════════════════════════════════════════════════════ */
+function openEnvelope() {
+  const wrap = document.getElementById('envelope-wrap');
+  if (wrap.classList.contains('open')) return;
+
+  wrap.classList.add('shaking');
+  setTimeout(() => {
+    wrap.classList.remove('shaking');
+    wrap.classList.add('open');
+
+    setTimeout(() => {
+      // Hide envelope
+      document.getElementById('envelope-screen').classList.add('hide');
+
+      // Show main site
+      const main = document.getElementById('main-site');
+      main.classList.add('show');
+
+      // Start all the good stuff
+      startHeroVideo();   // 🎬 video background
+      startBgAudio();     // 🎵 music autoplay
+      startConfetti();    // 🎉 confetti
+      initScratch();      // 🎁 scratch card
+      startTypewriter();  // ✍️  letter
+      spawnBalloons();    // 🎈 footer balloons
+
+    }, 900);
+  }, 400);
+}
+
+document.getElementById('envelope-wrap').addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ' ') openEnvelope();
+});
+
+
+/* ══════════════════════════════════════════════════════
+   BACKGROUND AUDIO — AUTOPLAY
+   The MP3 autoplays (looped) when the envelope opens.
+   The 🎵 button toggles pause/resume.
+
+   ✏️ CUSTOMIZE: Set the src in the <audio> tag at the
+   top of the HTML — search for "YOUR_SONG_HERE.mp3"
+══════════════════════════════════════════════════════ */
+const bgAudio = document.getElementById('bg-audio');
+
+function startBgAudio() {
+  bgAudio.volume = 0.55; // 0.0 (silent) → 1.0 (full) — adjust to taste
+  const playPromise = bgAudio.play();
+  if (playPromise !== undefined) {
+    playPromise.then(() => {
+      document.getElementById('music-btn').classList.add('playing');
+    }).catch(() => {
+      // Autoplay blocked by browser (requires user gesture).
+      // User can still tap 🎵 to start manually.
+      console.log('Autoplay blocked — user can tap 🎵 to start music.');
+    });
+  }
+}
+
+document.getElementById('music-btn').addEventListener('click', () => {
+  if (bgAudio.paused) {
+    bgAudio.play();
+    document.getElementById('music-btn').classList.add('playing');
+  } else {
+    bgAudio.pause();
+    document.getElementById('music-btn').classList.remove('playing');
+  }
+});
+
+
+/* ══════════════════════════════════════════════════════
+   CONFETTI
+══════════════════════════════════════════════════════ */
+function startConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  const colors = ['#F5C842','#FFD6D6','#FFF8E7','#B5D4F4','#C0DD97','#F4C0D1'];
+  let pieces = [];
+
+  function resize() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (let i = 0; i < 120; i++) {
+    pieces.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      w: Math.random() * 10 + 5,
+      h: Math.random() * 5 + 3,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      rot: Math.random() * Math.PI * 2,
+      rspeed: (Math.random() - 0.5) * 0.06,
+      vy: Math.random() * 1.5 + 0.8,
+      vx: (Math.random() - 0.5) * 1.5,
+      opacity: Math.random() * 0.7 + 0.3
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach(p => {
+      p.y += p.vy; p.x += p.vx; p.rot += p.rspeed;
+      if (p.y > canvas.height) { p.y = -10; p.x = Math.random() * canvas.width; }
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.globalAlpha = p.opacity;
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      ctx.restore();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+
+/* ══════════════════════════════════════════════════════
+   TYPEWRITER LETTER
+   ✏️ CUSTOMIZE: Edit the letter text below
+══════════════════════════════════════════════════════ */
+function startTypewriter() {
+  const el = document.getElementById('letter-text');
+
+  // ✏️ CUSTOMIZE — Change this letter to your own words!
+  const text = `Dear Dad,
+
+There are no words that can truly capture how much you mean to me.
+
+Every lesson you quietly taught, every sacrifice you never mentioned, every time you showed up without being asked — I noticed. I've always noticed.
+
+You gave me roots strong enough to stand on, and wings brave enough to fly. Watching you has shaped the person I am, and the person I'm still becoming.
+
+So today I just want to say: thank you. For everything visible, and everything invisible. For being you.
+
+I love you more than any card, website, or gift could ever say.`;
+
+  let i = 0;
+  el.style.whiteSpace = 'pre-wrap';
+
+  function type() {
+    if (i < text.length) {
+      el.textContent = text.slice(0, ++i);
+      const delay = text[i-1] === '\n' ? 60 : text[i-1] === '.' ? 80 : 22;
+      setTimeout(type, delay);
+    } else {
+      el.classList.add('done');
+    }
+  }
+
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { type(); obs.disconnect(); }
+  }, { threshold: 0.3 });
+  obs.observe(document.getElementById('letter-section'));
+}
+
+const styleTag = document.createElement('style');
+styleTag.textContent = '#letter-text.done::after { display: none; }';
+document.head.appendChild(styleTag);
+
+
+/* ══════════════════════════════════════════════════════
+   SCRATCH CARD
+══════════════════════════════════════════════════════ */
+function initScratch() {
+  const canvas = document.getElementById('scratch-canvas');
+  const reveal = document.getElementById('scratch-reveal');
+
+  function setSize() {
+    canvas.width = reveal.offsetWidth;
+    canvas.height = reveal.offsetHeight;
+    drawLayer();
+  }
+
+  function drawLayer() {
+    const ctx = canvas.getContext('2d');
+    const grd = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    grd.addColorStop(0, '#C8950A');
+    grd.addColorStop(0.5, '#F5C842');
+    grd.addColorStop(1, '#C8950A');
+    ctx.fillStyle = grd;
+    ctx.globalAlpha = 0.95;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = '#7A5C00';
+    ctx.font = `bold ${Math.floor(canvas.height * 0.18)}px Lato, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('🎁 Scratch Me! 🎁', canvas.width / 2, canvas.height / 2);
+  }
+
+  setSize();
+  window.addEventListener('resize', setSize);
+
+  const ctx = canvas.getContext('2d');
+  let scratching = false, totalScratched = 0;
+
+  function scratch(x, y) {
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.beginPath();
+    ctx.arc(x, y, 28, 0, Math.PI * 2);
+    ctx.fill();
+    if (++totalScratched > 40) {
+      canvas.style.transition = 'opacity 0.8s';
+      canvas.style.opacity = '0';
+      setTimeout(() => { canvas.style.display = 'none'; }, 800);
+    }
+  }
+
+  function pos(e, rect) {
+    return e.touches
+      ? { x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top }
+      : { x: e.clientX - rect.left, y: e.clientY - rect.top };
+  }
+
+  canvas.addEventListener('mousedown', e => { scratching = true; const r = canvas.getBoundingClientRect(); const p = pos(e,r); scratch(p.x,p.y); });
+  canvas.addEventListener('mousemove', e => { if (!scratching) return; const r = canvas.getBoundingClientRect(); const p = pos(e,r); scratch(p.x,p.y); });
+  canvas.addEventListener('mouseup', () => scratching = false);
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); scratching = true; const r = canvas.getBoundingClientRect(); const p = pos(e,r); scratch(p.x,p.y); }, { passive:false });
+  canvas.addEventListener('touchmove', e => { e.preventDefault(); if (!scratching) return; const r = canvas.getBoundingClientRect(); const p = pos(e,r); scratch(p.x,p.y); }, { passive:false });
+  canvas.addEventListener('touchend', () => scratching = false);
+}
+
+
+/* ══════════════════════════════════════════════════════
+   BALLOONS
+══════════════════════════════════════════════════════ */
+function spawnBalloons() {
+  const container = document.getElementById('balloons-container');
+  const emojis = ['🎈','🎈','🎉','🎊','💛','⭐'];
+  for (let i = 0; i < 8; i++) {
+    const b = document.createElement('span');
+    b.className = 'balloon';
+    b.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    b.style.left = (Math.random() * 95) + '%';
+    b.style.animationDuration = (5 + Math.random() * 7) + 's';
+    b.style.animationDelay = (Math.random() * 5) + 's';
+    container.appendChild(b);
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════
+   MEMORY PHOTOS
+══════════════════════════════════════════════════════ */
+function loadMemory(input) {
+  if (!input.files[0]) return;
+  const box = input.closest('.memory-box');
+  const img = box.querySelector('img');
+  const reader = new FileReader();
+  reader.onload = e => {
+    img.src = e.target.result;
+    img.style.display = 'block';
+    box.querySelector('.memory-cam').style.display = 'none';
+    box.querySelector('span:not(.memory-cam)').style.display = 'none';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+
+/* ══════════════════════════════════════════════════════
+   SCROLL ANIMATIONS
+══════════════════════════════════════════════════════ */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.fade-up, .tl-item').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
