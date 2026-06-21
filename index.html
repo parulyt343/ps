@@ -311,51 +311,82 @@
   .reason-card p { font-size: 0.88rem; color: #666; line-height: 1.6; }
 
   /* ─── MEMORIES ─── */
-  #memories { background: var(--navy); text-align: center; }
-  #memories .section-title { color: var(--cream); }
-  #memories .section-eyebrow { color: rgba(245,200,66,0.7); }
+  /* ─── MEMORIES ─── */
+#memories { background: var(--navy); text-align: center; }
+#memories .section-title { color: var(--cream); }
+#memories .section-eyebrow { color: rgba(245,200,66,0.7); }
 
-  .memories-strip {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1rem;
-    max-width: 900px;
-    margin: 0 auto 1.2rem;
-  }
+.memories-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  max-width: 900px;
+  margin: 0 auto 1.2rem;
+}
 
-  .memory-box {
-    aspect-ratio: 4/3;
-    border: 2px dashed rgba(245,200,66,0.35);
-    border-radius: 12px;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 0.5rem;
-    color: rgba(245,200,66,0.5);
-    font-size: 0.78rem;
-    letter-spacing: 0.04em;
-    background: rgba(245,200,66,0.04);
-    transition: border-color 0.3s, background 0.3s;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
+.memory-box {
+  aspect-ratio: 4/3;
+  perspective: 1000px;
+  cursor: pointer;
+}
 
-  .memory-box img {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    border-radius: 10px;
-    display: none;
-  }
+.memory-card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s ease;
+  border-radius: 12px;
+}
 
-  .memory-box input[type="file"] {
-    position: absolute; inset: 0;
-    opacity: 0; cursor: pointer; width: 100%; height: 100%;
-  }
+.memory-box.flipped .memory-card {
+  transform: rotateY(180deg);
+}
 
-  .memory-box:hover { border-color: var(--gold); background: rgba(245,200,66,0.08); }
-  .memory-cam { font-size: 2rem; }
-  .memories-note { font-size: 0.78rem; color: rgba(255,248,231,0.35); font-style: italic; }
+.memory-front,
+.memory-back {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.memory-front {
+  border: 2px dashed rgba(245,200,66,0.35);
+  background: rgba(245,200,66,0.04);
+  animation: gentle-pulse 2s ease-in-out infinite;
+}
+
+.memory-box.flipped .memory-front {
+  animation: none;
+}
+
+.memory-back {
+  transform: rotateY(180deg);
+  border: 2px solid rgba(245,200,66,0.5);
+  background: var(--navy);
+}
+
+.memory-front img,
+.memory-back img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@keyframes gentle-pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.03); }
+}
+
+.memories-note {
+  font-size: 0.78rem;
+  color: rgba(255,248,231,0.35);
+  font-style: italic;
+}
 
   /* ─── LETTER ─── */
   #letter-section { background: #F5EDD8; display: flex; justify-content: center; }
@@ -572,7 +603,7 @@
         <text x="160" y="161" text-anchor="middle" font-size="16" fill="#F5C842">♛</text>
       </g>
     </svg>
-    <p class="env-tap-text">Tap the envelope to open your surprise, Dad 💛</p>
+    <p class="env-tap-text">Tap the envelope to open your surprise, Papa 💛</p>
   </div>
 </div>
 
@@ -615,10 +646,10 @@
       </video>
     </div>
 
-    <canvas id="confetti-canvas"></canvas>
-    <div class="ribbon">Father's Day 2025</div>
-    <h1 class="hero-title fade-up">Happy Father's<br><span>Day, Dad!</span> 🎉</h1>
-    <p class="hero-sub fade-up">You're not just my dad — you're my hero, my guide, and my favourite person to call when everything goes sideways. ❤️</p>
+   
+    <div class="ribbon">Father's Day 2026</div>
+    <h1 class="hero-title fade-up">Happy Father's<br><span>Day, Papa!</span> 🎉</h1>
+    <p class="hero-sub fade-up">You're not just my father - you're my hero, my guide, and my favourite person to call when everything goes sideways. ❤️</p>
     <div class="hero-badge fade-up">✦ Made with all the love in the world ✦</div>
   </section>
 
@@ -635,7 +666,7 @@
       <div class="reason-card fade-up">
         <span class="icon">🛠️</span>
         <h3>My fixer</h3>
-        <p>There's nothing you can't repair — from broken things to broken days.</p>
+        <p>There's nothing you can't repair..from broken things to broken days.</p>
       </div>
       <div class="reason-card fade-up">
         <span class="icon">🤗</span>
@@ -644,8 +675,8 @@
       </div>
       <div class="reason-card fade-up">
         <span class="icon">😂</span>
-        <h3>Best bad jokes</h3>
-        <p>Your jokes are terrible — and somehow that makes them even better.</p>
+        <h3>Wisdom in Disguise</h3>
+        <p>Behind every sarcastic remark is a lesson I'll remember forever.</p>
       </div>
       <div class="reason-card fade-up">
         <span class="icon">🌙</span>
@@ -662,37 +693,52 @@
 
   <!-- MEMORIES -->
   <section id="memories">
-    <p class="section-eyebrow fade-up">📸 Tap to add a photo</p>
-    <h2 class="section-title fade-up">Our Favourite Memories</h2>
-    <div class="memories-strip">
-      <div class="memory-box fade-up" onclick="this.querySelector('input').click()">
-        <span class="memory-cam">📷</span>
-        <span>Add a memory</span>
-        <input type="file" accept="image/*" onchange="loadMemory(this)">
-        <img alt="memory">
-      </div>
-      <div class="memory-box fade-up" onclick="this.querySelector('input').click()">
-        <span class="memory-cam">📷</span>
-        <span>Add a memory</span>
-        <input type="file" accept="image/*" onchange="loadMemory(this)">
-        <img alt="memory">
-      </div>
-      <div class="memory-box fade-up" onclick="this.querySelector('input').click()">
-        <span class="memory-cam">📷</span>
-        <span>Add a memory</span>
-        <input type="file" accept="image/*" onchange="loadMemory(this)">
-        <img alt="memory">
-      </div>
-      <div class="memory-box fade-up" onclick="this.querySelector('input').click()">
-        <span class="memory-cam">📷</span>
-        <span>Add a memory</span>
-        <input type="file" accept="image/*" onchange="loadMemory(this)">
-        <img alt="memory">
-      </div>
-    </div>
-    <p class="memories-note fade-up">Click a frame to add your favourite family photos</p>
-  </section>
-
+        <p class="section-eyebrow fade-up">🎁 Our Special Moments</p>
+        <h2 class="section-title fade-up">Our Favourite Memories</h2>
+        <div class="memories-strip">
+          <div class="memory-box fade-up">
+            <div class="memory-card">
+              <div class="memory-front">
+                <img src="YOUR_GIFT_HAMPER_IMAGE_URL" alt="Gift Hamper">
+              </div>
+              <div class="memory-back">
+                <img src="YOUR_MEMORY_IMAGE_URL" alt="Memory 1">
+              </div>
+            </div>
+          </div>
+          <div class="memory-box fade-up">
+            <div class="memory-card">
+              <div class="memory-front">
+                <img src="YOUR_GIFT_HAMPER_IMAGE_URL" alt="Gift Hamper">
+              </div>
+              <div class="memory-back">
+                <img src="YOUR_MEMORY_IMAGE_URL" alt="Memory 2">
+              </div>
+            </div>
+          </div>
+          <div class="memory-box fade-up">
+            <div class="memory-card">
+              <div class="memory-front">
+                <img src="YOUR_GIFT_HAMPER_IMAGE_URL" alt="Gift Hamper">
+              </div>
+              <div class="memory-back">
+                <img src="YOUR_MEMORY_IMAGE_URL" alt="Memory 3">
+              </div>
+            </div>
+          </div>
+          <div class="memory-box fade-up">
+            <div class="memory-card">
+              <div class="memory-front">
+                <img src="pic1.jpeg" alt="Gift Hamper">
+              </div>
+              <div class="memory-back">
+                <img src="img2.jpeg" alt="Memory 4">
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="memories-note fade-up">🎁 Tap each gift to unwrap a cherished memory</p>
+      </section>
   <!-- LETTER -->
   <section id="letter-section">
     <div class="letter-paper fade-up">
@@ -1187,6 +1233,15 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.12 });
 
 document.querySelectorAll('.fade-up, .tl-item').forEach(el => observer.observe(el));
+
+ /* my script   */
+ document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.memory-box').forEach(function(box) {
+    box.addEventListener('click', function() {
+      this.classList.toggle('flipped');
+    });
+  });
+});
 </script>
 </body>
 </html>
