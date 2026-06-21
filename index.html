@@ -27,14 +27,12 @@
     overflow-x: hidden;
   }
 
-  /* ─── PARTICLES ─── */
   #particles-canvas {
     position: fixed; top: 0; left: 0;
     width: 100%; height: 100%;
     pointer-events: none; z-index: 0;
   }
 
-  /* ─── ENVELOPE SCREEN ─── */
   #envelope-screen {
     position: fixed; inset: 0;
     background: linear-gradient(135deg, #0D1225 0%, #1A1F3C 50%, #2A1F3C 100%);
@@ -62,7 +60,6 @@
     50% { opacity: 1; transform: translateY(-4px); }
   }
 
-  /* ─── ENVELOPE SVG WRAPPER ─── */
   #envelope-wrap {
     cursor: pointer;
     position: relative;
@@ -117,7 +114,6 @@
     text-align: center;
   }
 
-  /* ─── MAIN SITE ─── */
   #main-site {
     opacity: 0; visibility: hidden;
     transition: opacity 1s ease 0.3s;
@@ -127,7 +123,6 @@
     opacity: 1; visibility: visible;
   }
 
-  /* ─── MUSIC BTN ─── */
   #music-btn {
     position: fixed; top: 1rem; right: 1rem;
     background: rgba(245,200,66,0.15);
@@ -146,16 +141,12 @@
     50% { transform: scale(1.12) rotate(8deg); }
   }
 
-  /* ─── SECTION BASE ─── */
   section {
     position: relative;
     padding: clamp(3rem, 8vw, 6rem) clamp(1.2rem, 5vw, 4rem);
     overflow: hidden;
   }
 
-  /* ════════════════════════════════════════════
-     HERO SECTION — VIDEO BACKGROUND
-  ════════════════════════════════════════════ */
   #hero {
     min-height: 100vh;
     background: linear-gradient(160deg, #0D1225 0%, #1A1F3C 60%, #251A3C 100%);
@@ -166,7 +157,6 @@
     position: relative;
   }
 
-  /* Video background container */
   #hero-video-bg {
     position: absolute;
     inset: 0;
@@ -175,26 +165,19 @@
     z-index: 0;
   }
 
-  /* Both videos sit on top of each other; JS shows the right one */
   #hero-video-bg video {
     position: absolute;
     inset: 0;
     width: 100%; height: 100%;
     object-fit: cover;
-    display: none; /* hidden until envelope opens */
+    display: none;
     opacity: 0;
     transition: opacity 1.2s ease;
   }
 
-  #hero-video-bg video.active {
-    display: block;
-  }
+  #hero-video-bg video.active { display: block; }
+  #hero-video-bg video.visible { opacity: 1; }
 
-  #hero-video-bg video.visible {
-    opacity: 1;
-  }
-
-  /* Dark overlay so text stays readable over the video */
   #hero-video-bg::after {
     content: '';
     position: absolute; inset: 0;
@@ -202,10 +185,8 @@
     z-index: 1;
   }
 
-  /* All hero text/content must sit above the video overlay */
   #hero > *:not(#hero-video-bg) { position: relative; z-index: 2; }
 
-  /* ─── HERO TEXT ─── */
   .ribbon {
     background: var(--gold);
     color: var(--navy);
@@ -225,7 +206,7 @@
     width: 0; height: 0;
   }
   .ribbon::before { left: -10px; border: 12px solid transparent; border-right-color: var(--gold); border-left: 0; }
-  .ribbon::after { right: -10px; border: 12px solid transparent; border-left-color: var(--gold); border-right: 0; }
+  .ribbon::after  { right: -10px; border: 12px solid transparent; border-left-color: var(--gold); border-right: 0; }
 
   .hero-title {
     font-family: 'Playfair Display', serif;
@@ -234,7 +215,6 @@
     line-height: 1.15;
     text-shadow: 0 4px 30px rgba(245,200,66,0.2);
   }
-
   .hero-title span { color: var(--gold); }
 
   .hero-sub {
@@ -261,7 +241,6 @@
     pointer-events: none; z-index: 1;
   }
 
-  /* ─── REASONS SECTION ─── */
   #reasons { background: var(--cream); }
 
   .section-eyebrow {
@@ -299,96 +278,82 @@
     text-align: center;
     transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s, border-color 0.3s;
   }
-
   .reason-card:hover {
     transform: translateY(-8px) scale(1.02);
     box-shadow: 0 16px 48px rgba(212,160,23,0.18);
     border-color: var(--gold);
   }
-
   .reason-card .icon { font-size: 2.4rem; margin-bottom: 0.8rem; display: block; }
   .reason-card h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--navy); margin-bottom: 0.5rem; }
-  .reason-card p { font-size: 0.88rem; color: #666; line-height: 1.6; }
+  .reason-card p  { font-size: 0.88rem; color: #666; line-height: 1.6; }
 
-  /* ─── MEMORIES ─── */
-  /* ─── MEMORIES ─── */
-#memories { background: var(--navy); text-align: center; }
-#memories .section-title { color: var(--cream); }
-#memories .section-eyebrow { color: rgba(245,200,66,0.7); }
+  #memories { background: var(--navy); text-align: center; }
+  #memories .section-title  { color: var(--cream); }
+  #memories .section-eyebrow { color: rgba(245,200,66,0.7); }
 
-.memories-strip {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1rem;
-  max-width: 900px;
-  margin: 0 auto 1.2rem;
-}
+  .memories-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    max-width: 900px;
+    margin: 0 auto 1.2rem;
+  }
 
-.memory-box {
-  aspect-ratio: 4/3;
-  perspective: 1000px;
-  cursor: pointer;
-}
+  .memory-box {
+    aspect-ratio: 4/3;
+    perspective: 1000px;
+    cursor: pointer;
+  }
 
-.memory-card {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.6s ease;
-  border-radius: 12px;
-}
+  .memory-card {
+    width: 100%; height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease;
+    border-radius: 12px;
+  }
 
-.memory-box.flipped .memory-card {
-  transform: rotateY(180deg);
-}
+  .memory-box.flipped .memory-card { transform: rotateY(180deg); }
 
-.memory-front,
-.memory-back {
-  position: absolute;
-  inset: 0;
-  border-radius: 12px;
-  overflow: hidden;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
+  .memory-front,
+  .memory-back {
+    position: absolute; inset: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
 
-.memory-front {
-  border: 2px dashed rgba(245,200,66,0.35);
-  background: rgba(245,200,66,0.04);
-  animation: gentle-pulse 2s ease-in-out infinite;
-}
+  .memory-front {
+    border: 2px dashed rgba(245,200,66,0.35);
+    background: rgba(245,200,66,0.04);
+    animation: gentle-pulse 2s ease-in-out infinite;
+  }
+  .memory-box.flipped .memory-front { animation: none; }
 
-.memory-box.flipped .memory-front {
-  animation: none;
-}
+  .memory-back {
+    transform: rotateY(180deg);
+    border: 2px solid rgba(245,200,66,0.5);
+    background: var(--navy);
+  }
 
-.memory-back {
-  transform: rotateY(180deg);
-  border: 2px solid rgba(245,200,66,0.5);
-  background: var(--navy);
-}
+  .memory-front img,
+  .memory-back img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
 
-.memory-front img,
-.memory-back img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
+  @keyframes gentle-pulse {
+    0%, 100% { transform: scale(1); }
+    50%       { transform: scale(1.03); }
+  }
 
-@keyframes gentle-pulse {
-  0%, 100% { transform: scale(1); }
-  50%       { transform: scale(1.03); }
-}
+  .memories-note {
+    font-size: 0.78rem;
+    color: rgba(255,248,231,0.35);
+    font-style: italic;
+  }
 
-.memories-note {
-  font-size: 0.78rem;
-  color: rgba(255,248,231,0.35);
-  font-style: italic;
-}
-
-  /* ─── LETTER ─── */
   #letter-section { background: #F5EDD8; display: flex; justify-content: center; }
 
   .letter-paper {
@@ -418,9 +383,11 @@
     line-height: 1.9;
     color: #3A2E1E;
     min-height: 80px;
+    white-space: pre-wrap;
   }
 
-  .letter-body::after {
+  /* Cursor only while typing */
+  .letter-body:not(.done)::after {
     content: '|';
     animation: blink 1s step-start infinite;
     color: var(--gold-dark);
@@ -431,7 +398,6 @@
 
   .letter-sig { margin-top: 2rem; font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--navy); font-style: italic; }
 
-  /* ─── SCRATCH CARD ─── */
   #scratch-section { background: var(--cream); text-align: center; }
 
   .scratch-wrap {
@@ -465,9 +431,8 @@
   #scratch-canvas { position: absolute; inset: 0; border-radius: 16px; }
   .scratch-hint { font-size: 0.82rem; color: #888; margin-top: 0.8rem; font-style: italic; }
 
-  /* ─── TIMELINE ─── */
   #timeline-section { background: var(--navy); }
-  #timeline-section .section-title { color: var(--cream); }
+  #timeline-section .section-title  { color: var(--cream); }
   #timeline-section .section-eyebrow { color: rgba(245,200,66,0.65); }
 
   .timeline {
@@ -492,7 +457,6 @@
     transform: translateX(-20px);
     transition: opacity 0.6s ease, transform 0.6s ease;
   }
-
   .tl-item.visible { opacity: 1; transform: translateX(0); }
 
   .tl-dot {
@@ -509,7 +473,6 @@
   .tl-year { font-size: 0.75rem; color: var(--gold); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.25rem; }
   .tl-text { font-family: 'Playfair Display', serif; font-size: clamp(0.95rem, 2.5vw, 1.1rem); color: rgba(255,248,231,0.85); line-height: 1.6; }
 
-  /* ─── FOOTER ─── */
   #footer { background: #090D1A; text-align: center; padding: 3rem 1.5rem; position: relative; overflow: hidden; }
   #footer .big-heart { font-size: clamp(2.5rem, 8vw, 4rem); display: block; margin-bottom: 1rem; animation: heartbeat 1.4s ease-in-out infinite; }
 
@@ -525,27 +488,24 @@
   #footer .footer-name { color: var(--gold); font-weight: 600; font-style: normal; }
 
   .balloons { position: absolute; bottom: 0; left: 0; right: 0; pointer-events: none; }
-  .balloon { position: absolute; bottom: -60px; font-size: clamp(1.4rem, 4vw, 2rem); animation: float-up linear infinite; }
+  .balloon  { position: absolute; bottom: -60px; font-size: clamp(1.4rem, 4vw, 2rem); animation: float-up linear infinite; }
 
   @keyframes float-up {
-    0% { transform: translateY(0) rotate(-5deg); opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 0.6; }
+    0%   { transform: translateY(0) rotate(-5deg); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 0.6; }
     100% { transform: translateY(-120vh) rotate(5deg); opacity: 0; }
   }
 
-  /* ─── RESPONSIVE ─── */
   @media (max-width: 480px) {
     .ribbon::before, .ribbon::after { display: none; }
-    .cards-grid { grid-template-columns: 1fr 1fr; }
-    .memories-strip { grid-template-columns: 1fr 1fr; }
+    .cards-grid      { grid-template-columns: 1fr 1fr; }
+    .memories-strip  { grid-template-columns: 1fr 1fr; }
   }
-
   @media (max-width: 360px) {
     .cards-grid { grid-template-columns: 1fr; }
   }
 
-  /* ─── SCROLL ANIMATIONS ─── */
   .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .fade-up.visible { opacity: 1; transform: translateY(0); }
 </style>
@@ -554,29 +514,13 @@
 
 <canvas id="particles-canvas"></canvas>
 
-<!-- ════════════════════════════════════════════
-     🎵 MUSIC BUTTON
-     The audio element below will autoplay the
-     MP3 once the user opens the envelope.
-════════════════════════════════════════════ -->
 <button id="music-btn" title="Toggle music" aria-label="Toggle music">🎵</button>
 
-<!--
-  ✏️ CUSTOMIZE — YOUR MP3 FILE
-  Replace the `src` below with the path to your MP3 file.
-  Example: If your file is called "song.mp3" and sits next
-  to this HTML file, just write: src="song.mp3"
-  The music will autoplay (looped) when the envelope opens,
-  and the 🎵 button toggles it on/off.
--->
 <audio id="bg-audio" loop preload="auto">
   <source src="audio.mp3" type="audio/mpeg">
 </audio>
 
-
-<!-- ═══════════════════════════════
-     ENVELOPE SCREEN
-═══════════════════════════════ -->
+<!-- ENVELOPE SCREEN -->
 <div id="envelope-screen">
   <p class="env-hint">✦ A surprise is waiting for you ✦</p>
 
@@ -607,53 +551,26 @@
   </div>
 </div>
 
-
-<!-- ═══════════════════════════════
-     MAIN WEBSITE
-═══════════════════════════════ -->
+<!-- MAIN WEBSITE -->
 <div id="main-site">
 
-  <!-- ════════════════════════════════════════════
-       HERO SECTION
-       Video backgrounds are inside #hero-video-bg.
-       Desktop video plays on screens ≥ 768px wide.
-       Mobile video plays on screens < 768px wide.
-       Both are hidden until the envelope opens.
-  ════════════════════════════════════════════ -->
   <section id="hero">
-
     <div id="hero-video-bg">
-      <!--
-        ✏️ CUSTOMIZE — DESKTOP VIDEO
-        Replace src="YOUR_DESKTOP_VIDEO.mp4" with your
-        landscape/desktop MP4 file path.
-        Example: src="landscape.mp4"
-        This video plays on screens 768px wide and above.
-      -->
       <video id="video-desktop" playsinline muted loop>
         <source src="Landscape (1).mp4" type="video/mp4">
       </video>
-
-      <!--
-        ✏️ CUSTOMIZE — MOBILE VIDEO
-        Replace src="YOUR_MOBILE_VIDEO.mp4" with your
-        portrait/mobile MP4 file path.
-        Example: src="portrait.mp4"
-        This video plays on screens narrower than 768px.
-      -->
       <video id="video-mobile" playsinline muted loop>
         <source src="portrait (1).mp4" type="video/mp4">
       </video>
     </div>
 
-
+    <canvas id="confetti-canvas"></canvas>
     <div class="ribbon">Father's Day 2026</div>
     <h1 class="hero-title fade-up">Happy Father's<br><span>Day, Papa!</span> 🎉</h1>
     <p class="hero-sub fade-up">You're not just my father - you're my hero, my guide, and my favourite person to call when everything goes sideways. ❤️</p>
     <div class="hero-badge fade-up">✦ Made with all the love in the world ✦</div>
   </section>
 
-  <!-- REASONS -->
   <section id="reasons">
     <p class="section-eyebrow fade-up">Counting the reasons</p>
     <h2 class="section-title fade-up">Why You're the Best Dad 🏆</h2>
@@ -691,57 +608,38 @@
     </div>
   </section>
 
-  <!-- MEMORIES -->
   <section id="memories">
-        <p class="section-eyebrow fade-up">🎁 Our Special Moments</p>
-        <h2 class="section-title fade-up">Our Favourite Memories</h2>
-        <div class="memories-strip">
-          <div class="memory-box fade-up">
-            <div class="memory-card">
-              <div class="memory-front">
-                <img src="YOUR_GIFT_HAMPER_IMAGE_URL" alt="Gift Hamper">
-                <img src="gift-box.jpg" alt="Gift Hamper">
-              </div>
-              <div class="memory-back">
-                <img src="YOUR_MEMORY_IMAGE_URL" alt="Memory 1">
-                <img src="pa1.jpeg" alt="Memory 1">
-              </div>
-            </div>
-          </div>
-          <div class="memory-box fade-up">
-            <div class="memory-card">
-              <div class="memory-front">
-                <img src="YOUR_GIFT_HAMPER_IMAGE_URL" alt="Gift Hamper">
-              </div>
-              <div class="memory-back">
-                <img src="YOUR_MEMORY_IMAGE_URL" alt="Memory 2">
-              </div>
-            </div>
-          </div>
-          <div class="memory-box fade-up">
-            <div class="memory-card">
-              <div class="memory-front">
-                <img src="YOUR_GIFT_HAMPER_IMAGE_URL" alt="Gift Hamper">
-              </div>
-              <div class="memory-back">
-                <img src="YOUR_MEMORY_IMAGE_URL" alt="Memory 3">
-              </div>
-            </div>
-          </div>
-          <div class="memory-box fade-up">
-            <div class="memory-card">
-              <div class="memory-front">
-                <img src="pic1.jpeg" alt="Gift Hamper">
-              </div>
-              <div class="memory-back">
-                <img src="img2.jpeg" alt="Memory 4">
-              </div>
-            </div>
-          </div>
+    <p class="section-eyebrow fade-up">🎁 Our Special Moments</p>
+    <h2 class="section-title fade-up">Our Favourite Memories</h2>
+    <div class="memories-strip">
+      <div class="memory-box fade-up">
+        <div class="memory-card">
+          <div class="memory-front"><img src="gift-box.jpg" alt="Gift Hamper"></div>
+          <div class="memory-back"><img src="pa1.jpeg" alt="Memory 1"></div>
         </div>
-        <p class="memories-note fade-up">🎁 Tap each gift to unwrap a cherished memory</p>
-      </section>
-  <!-- LETTER -->
+      </div>
+      <div class="memory-box fade-up">
+        <div class="memory-card">
+          <div class="memory-front"><img src="YOUR_GIFT_HAMPER_IMAGE_URL" alt="Gift Hamper"></div>
+          <div class="memory-back"><img src="YOUR_MEMORY_IMAGE_URL" alt="Memory 2"></div>
+        </div>
+      </div>
+      <div class="memory-box fade-up">
+        <div class="memory-card">
+          <div class="memory-front"><img src="YOUR_GIFT_HAMPER_IMAGE_URL" alt="Gift Hamper"></div>
+          <div class="memory-back"><img src="YOUR_MEMORY_IMAGE_URL" alt="Memory 3"></div>
+        </div>
+      </div>
+      <div class="memory-box fade-up">
+        <div class="memory-card">
+          <div class="memory-front"><img src="pic1.jpeg" alt="Gift Hamper"></div>
+          <div class="memory-back"><img src="img2.jpeg" alt="Memory 4"></div>
+        </div>
+      </div>
+    </div>
+    <p class="memories-note fade-up">🎁 Tap each gift to unwrap a cherished memory</p>
+  </section>
+
   <section id="letter-section">
     <div class="letter-paper fade-up">
       <p class="letter-date">June 15, 2025</p>
@@ -750,7 +648,6 @@
     </div>
   </section>
 
-  <!-- SCRATCH CARD -->
   <section id="scratch-section">
     <p class="section-eyebrow fade-up">🎁 A little something extra</p>
     <h2 class="section-title fade-up">Scratch to Reveal Your Gift!</h2>
@@ -764,7 +661,6 @@
     <p class="scratch-hint fade-up">Use your finger or mouse to scratch</p>
   </section>
 
-  <!-- TIMELINE -->
   <section id="timeline-section">
     <p class="section-eyebrow fade-up">Through the years</p>
     <h2 class="section-title fade-up">Moments That Made Us ✨</h2>
@@ -797,24 +693,16 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer id="footer">
     <span class="big-heart">💛</span>
     <p>Made with every bit of love I have, just for you, <span class="footer-name">Dad</span>.</p>
-    <br>
-    <p style="font-size:0.8rem; margin-top:0.8rem; color:rgba(255,255,255,0.2);">
-      ✦ Customize: replace video paths, MP3 path, letter text, and your name ✦
-    </p>
     <div class="balloons" id="balloons-container"></div>
   </footer>
 
 </div><!-- end main-site -->
 
-
 <script>
-/* ══════════════════════════════════════════════════════
-   PARTICLES (background stars on envelope screen)
-══════════════════════════════════════════════════════ */
+/* ── PARTICLES ── */
 (function() {
   const c = document.getElementById('particles-canvas');
   const ctx = c.getContext('2d');
@@ -858,91 +746,51 @@
 })();
 
 
-/* ══════════════════════════════════════════════════════
-   VIDEO BACKGROUND
-   Detects screen width and plays the correct video.
-   Desktop  = window.innerWidth >= 768
-   Mobile   = window.innerWidth <  768
-   Called once when the envelope opens.
-══════════════════════════════════════════════════════ */
+/* ── VIDEO BACKGROUND ── */
 function startHeroVideo() {
   const isMobile = window.innerWidth < 768;
   const videoDesktop = document.getElementById('video-desktop');
   const videoMobile  = document.getElementById('video-mobile');
+  const activeVideo  = isMobile ? videoMobile : videoDesktop;
 
-  // Pick the right video for the current screen size
-  const activeVideo = isMobile ? videoMobile : videoDesktop;
   activeVideo.classList.add('active');
-
-  // Play the video, then fade it in once it's ready
-  const playPromise = activeVideo.play();
-  if (playPromise !== undefined) {
-    playPromise.then(() => {
-      setTimeout(() => activeVideo.classList.add('visible'), 100);
-    }).catch(() => {
-      // Autoplay blocked — video still shows as background image fallback
-      activeVideo.classList.add('visible');
-    });
+  const p = activeVideo.play();
+  if (p !== undefined) {
+    p.then(() => setTimeout(() => activeVideo.classList.add('visible'), 100))
+     .catch(() => activeVideo.classList.add('visible'));
   }
 
-  // Handle window resize: swap videos if user rotates phone
   let currentIsMobile = isMobile;
   window.addEventListener('resize', () => {
     const nowMobile = window.innerWidth < 768;
     if (nowMobile === currentIsMobile) return;
     currentIsMobile = nowMobile;
-
-    const old = nowMobile ? videoDesktop : videoMobile;
-    const fresh = nowMobile ? videoMobile : videoDesktop;
-
+    const old   = nowMobile ? videoDesktop : videoMobile;
+    const fresh = nowMobile ? videoMobile  : videoDesktop;
     old.classList.remove('active', 'visible');
     old.pause();
-
     fresh.classList.add('active');
-    const p = fresh.play();
-    if (p !== undefined) {
-      p.then(() => setTimeout(() => fresh.classList.add('visible'), 100)).catch(() => fresh.classList.add('visible'));
+    const rp = fresh.play();
+    if (rp !== undefined) {
+      rp.then(() => setTimeout(() => fresh.classList.add('visible'), 100))
+        .catch(() => fresh.classList.add('visible'));
     }
   });
 }
 
 
-/* ══════════════════════════════════════════════════════
-   BACKGROUND AUDIO
-   The MP3 autoplays (looped) when the envelope opens.
-   The 🎵 button toggles pause/resume.
-
-   ✏️ CUSTOMIZE: Set the src in the <audio> tag in the
-   HTML — search for "YOUR_SONG_HERE.mp3"
-
-   WHY THIS WORKS ON GITHUB PAGES:
-   Browsers (Chrome, Safari, Firefox) block audio.play()
-   if it isn't called synchronously inside a user-gesture
-   handler. A setTimeout — even 1ms — breaks that chain.
-   The fix: call bgAudio.play() IMMEDIATELY on the click
-   (synchronously), then pause+seek to 0 right away. This
-   "unlocks" the audio element. Later, when we actually
-   want it to play, a second .play() call is always
-   allowed because the element is already unlocked.
-══════════════════════════════════════════════════════ */
+/* ── AUDIO ── */
 const bgAudio = document.getElementById('bg-audio');
-bgAudio.volume = 0.55; // 0.0 (silent) → 1.0 (full) — adjust to taste
+bgAudio.volume = 0.55;
 
 function unlockAudio() {
-  // Called synchronously inside the click — unlocks the element
-  bgAudio.play().then(() => {
-    bgAudio.pause();
-    bgAudio.currentTime = 0;
-  }).catch(() => {});
+  bgAudio.play().then(() => { bgAudio.pause(); bgAudio.currentTime = 0; }).catch(() => {});
 }
 
 function startBgAudio() {
-  // Safe to call inside setTimeout now because element is already unlocked
-  bgAudio.play().then(() => {
-    document.getElementById('music-btn').classList.add('playing');
-  }).catch(() => {
-    console.log('Audio still blocked — user can tap 🎵 to start manually.');
-  });
+  bgAudio.play()
+    .then(() => document.getElementById('music-btn').classList.add('playing'))
+    .catch(() => {});
 }
 
 document.getElementById('music-btn').addEventListener('click', () => {
@@ -956,16 +804,12 @@ document.getElementById('music-btn').addEventListener('click', () => {
 });
 
 
-/* ══════════════════════════════════════════════════════
-   ENVELOPE OPEN
-   Triggers: video, music autoplay, confetti, all sections
-══════════════════════════════════════════════════════ */
+/* ── ENVELOPE OPEN ── */
 function openEnvelope() {
   const wrap = document.getElementById('envelope-wrap');
   if (wrap.classList.contains('open')) return;
 
-  // ← UNLOCK AUDIO HERE, synchronously inside the click gesture
-  unlockAudio();
+  unlockAudio(); // must be synchronous inside the click gesture
 
   wrap.classList.add('shaking');
   setTimeout(() => {
@@ -973,20 +817,21 @@ function openEnvelope() {
     wrap.classList.add('open');
 
     setTimeout(() => {
-      // Hide envelope
       document.getElementById('envelope-screen').classList.add('hide');
 
-      // Show main site
       const main = document.getElementById('main-site');
       main.classList.add('show');
 
-      // Start all the good stuff
-      startHeroVideo();   // 🎬 video background
-      startBgAudio();     // 🎵 music (safe now — already unlocked above)
-      startConfetti();    // 🎉 confetti
-      initScratch();      // 🎁 scratch card
-      startTypewriter();  // ✍️  letter
-      spawnBalloons();    // 🎈 footer balloons
+      startHeroVideo();
+      startBgAudio();
+      startConfetti();
+      spawnBalloons();
+
+      // Deferred: both need real layout after main-site becomes visible
+      requestAnimationFrame(() => {
+        initScratch();
+        startTypewriter();
+      });
 
     }, 900);
   }, 400);
@@ -997,20 +842,14 @@ document.getElementById('envelope-wrap').addEventListener('keydown', e => {
 });
 
 
-/* ══════════════════════════════════════════════════════
-   CONFETTI
-══════════════════════════════════════════════════════ */
+/* ── CONFETTI ── */
 function startConfetti() {
   const canvas = document.getElementById('confetti-canvas');
   const ctx = canvas.getContext('2d');
   const colors = ['#F5C842','#FFD6D6','#FFF8E7','#B5D4F4','#C0DD97','#F4C0D1'];
   let pieces = [];
 
-  function resize() {
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-  }
-
+  function resize() { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
   resize();
   window.addEventListener('resize', resize);
 
@@ -1048,19 +887,17 @@ function startConfetti() {
 }
 
 
-/* ══════════════════════════════════════════════════════
-   TYPEWRITER LETTER
-   FIX: With threshold:0.3, if the letter section is
-   already partially in view when the observer attaches
-   (e.g. on a tall screen), the callback never fires.
-   Using threshold:0 and immediately checking
-   isIntersecting after connecting fixes this.
-   ✏️ CUSTOMIZE: Edit the letter text below
-══════════════════════════════════════════════════════ */
+/* ── TYPEWRITER LETTER ──
+   FIX: Previously a getBoundingClientRect() fallback fired
+   while #main-site was still visibility:hidden (zero dims),
+   triggering the typewriter immediately on envelope open
+   instead of when the letter section scrolled into view.
+   Now we only attach the IntersectionObserver — no fallback
+   needed, because requestAnimationFrame in openEnvelope()
+   guarantees the DOM is laid out before we get here.
+*/
 function startTypewriter() {
   const el = document.getElementById('letter-text');
-
-  // ✏️ CUSTOMIZE — Change this letter to your own words!
   const text = `Dear Dad,
 
 There are no words that can truly capture how much you mean to me.
@@ -1075,12 +912,12 @@ I love you more than any card, website, or gift could ever say.`;
 
   let i = 0;
   let started = false;
-  el.style.whiteSpace = 'pre-wrap';
 
   function type() {
     if (i < text.length) {
       el.textContent = text.slice(0, ++i);
-      const delay = text[i-1] === '\n' ? 60 : text[i-1] === '.' ? 80 : 22;
+      const ch = text[i - 1];
+      const delay = ch === '\n' ? 60 : ch === '.' ? 80 : 22;
       setTimeout(type, delay);
     } else {
       el.classList.add('done');
@@ -1093,85 +930,75 @@ I love you more than any card, website, or gift could ever say.`;
     type();
   }
 
-  // threshold:0 fires as soon as even 1px is visible
   const obs = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting) { tryStart(); obs.disconnect(); }
   }, { threshold: 0 });
 
   obs.observe(document.getElementById('letter-section'));
-
-  // Fallback: if section is already in view when this runs, start immediately
-  const rect = document.getElementById('letter-section').getBoundingClientRect();
-  if (rect.top < window.innerHeight && rect.bottom > 0) tryStart();
 }
 
-const styleTag = document.createElement('style');
-styleTag.textContent = '#letter-text.done::after { display: none; }';
-document.head.appendChild(styleTag);
 
-
-/* ══════════════════════════════════════════════════════
-   SCRATCH CARD
-   FIX: #main-site is visibility:hidden when initScratch()
-   is first called, so offsetWidth/offsetHeight = 0 and
-   the canvas draws nothing. We defer setSize() until the
-   scratch section actually enters the viewport (i.e. the
-   user has scrolled to it and the element has real dimensions).
-══════════════════════════════════════════════════════ */
+/* ── SCRATCH CARD ──
+   FIX: Canvas is sized inside an IntersectionObserver so
+   it only reads offsetWidth/Height once the section is
+   actually on screen (and therefore has real dimensions).
+   The earlier bug was initScratch() reading zero dimensions
+   because #main-site was visibility:hidden at call time.
+*/
 function initScratch() {
   const canvas = document.getElementById('scratch-canvas');
   const reveal = document.getElementById('scratch-reveal');
-  let sized = false;
+  const ctx    = canvas.getContext('2d');
+  let sized      = false;
+  let scratching = false;
+  let totalScratched = 0;
+
+  function drawLayer() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const grd = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    grd.addColorStop(0,   '#C8950A');
+    grd.addColorStop(0.5, '#F5C842');
+    grd.addColorStop(1,   '#C8950A');
+    ctx.fillStyle    = grd;
+    ctx.globalAlpha  = 0.95;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.globalAlpha  = 1;
+    ctx.fillStyle    = '#7A5C00';
+    ctx.font         = `bold ${Math.floor(canvas.height * 0.18)}px Lato, sans-serif`;
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('🎁 Scratch Me! 🎁', canvas.width / 2, canvas.height / 2);
+  }
 
   function setSize() {
     const w = reveal.offsetWidth;
     const h = reveal.offsetHeight;
-    if (w === 0 || h === 0) return; // still hidden — skip
-    canvas.width = w;
+    if (w === 0 || h === 0) return;
+    canvas.width  = w;
     canvas.height = h;
     sized = true;
     drawLayer();
   }
 
-  function drawLayer() {
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const grd = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    grd.addColorStop(0, '#C8950A');
-    grd.addColorStop(0.5, '#F5C842');
-    grd.addColorStop(1, '#C8950A');
-    ctx.fillStyle = grd;
-    ctx.globalAlpha = 0.95;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.globalAlpha = 1;
-    ctx.fillStyle = '#7A5C00';
-    ctx.font = `bold ${Math.floor(canvas.height * 0.18)}px Lato, sans-serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('🎁 Scratch Me! 🎁', canvas.width / 2, canvas.height / 2);
-  }
-
-  // Wait until scratch section scrolls into view before sizing
-  const sizeObserver = new IntersectionObserver(entries => {
+  const sizeObs = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting && !sized) {
       setSize();
+      sizeObs.disconnect();
     }
   }, { threshold: 0.1 });
-  sizeObserver.observe(document.getElementById('scratch-section'));
+  sizeObs.observe(document.getElementById('scratch-section'));
 
   window.addEventListener('resize', () => { if (sized) setSize(); });
 
-  const ctx = canvas.getContext('2d');
-  let scratching = false, totalScratched = 0;
-
   function scratch(x, y) {
+    if (!sized) return;
     ctx.globalCompositeOperation = 'destination-out';
     ctx.beginPath();
     ctx.arc(x, y, 28, 0, Math.PI * 2);
     ctx.fill();
     if (++totalScratched > 40) {
       canvas.style.transition = 'opacity 0.8s';
-      canvas.style.opacity = '0';
+      canvas.style.opacity    = '0';
       setTimeout(() => { canvas.style.display = 'none'; }, 800);
     }
   }
@@ -1179,21 +1006,19 @@ function initScratch() {
   function pos(e, rect) {
     return e.touches
       ? { x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top }
-      : { x: e.clientX - rect.left, y: e.clientY - rect.top };
+      : { x: e.clientX - rect.left,             y: e.clientY - rect.top };
   }
 
-  canvas.addEventListener('mousedown', e => { scratching = true; const r = canvas.getBoundingClientRect(); const p = pos(e,r); scratch(p.x,p.y); });
-  canvas.addEventListener('mousemove', e => { if (!scratching) return; const r = canvas.getBoundingClientRect(); const p = pos(e,r); scratch(p.x,p.y); });
-  canvas.addEventListener('mouseup', () => scratching = false);
-  canvas.addEventListener('touchstart', e => { e.preventDefault(); scratching = true; const r = canvas.getBoundingClientRect(); const p = pos(e,r); scratch(p.x,p.y); }, { passive:false });
-  canvas.addEventListener('touchmove', e => { e.preventDefault(); if (!scratching) return; const r = canvas.getBoundingClientRect(); const p = pos(e,r); scratch(p.x,p.y); }, { passive:false });
-  canvas.addEventListener('touchend', () => scratching = false);
+  canvas.addEventListener('mousedown',  e => { scratching = true;  const r = canvas.getBoundingClientRect(); const p = pos(e,r); scratch(p.x, p.y); });
+  canvas.addEventListener('mousemove',  e => { if (!scratching) return; const r = canvas.getBoundingClientRect(); const p = pos(e,r); scratch(p.x, p.y); });
+  canvas.addEventListener('mouseup',    ()  => scratching = false);
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); scratching = true;  const r = canvas.getBoundingClientRect(); const p = pos(e,r); scratch(p.x, p.y); }, { passive: false });
+  canvas.addEventListener('touchmove',  e => { e.preventDefault(); if (!scratching) return; const r = canvas.getBoundingClientRect(); const p = pos(e,r); scratch(p.x, p.y); }, { passive: false });
+  canvas.addEventListener('touchend',   ()  => scratching = false);
 }
 
 
-/* ══════════════════════════════════════════════════════
-   BALLOONS
-══════════════════════════════════════════════════════ */
+/* ── BALLOONS ── */
 function spawnBalloons() {
   const container = document.getElementById('balloons-container');
   const emojis = ['🎈','🎈','🎉','🎊','💛','⭐'];
@@ -1201,49 +1026,26 @@ function spawnBalloons() {
     const b = document.createElement('span');
     b.className = 'balloon';
     b.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-    b.style.left = (Math.random() * 95) + '%';
+    b.style.left              = (Math.random() * 95) + '%';
     b.style.animationDuration = (5 + Math.random() * 7) + 's';
-    b.style.animationDelay = (Math.random() * 5) + 's';
+    b.style.animationDelay    = (Math.random() * 5) + 's';
     container.appendChild(b);
   }
 }
 
 
-/* ══════════════════════════════════════════════════════
-   MEMORY PHOTOS
-══════════════════════════════════════════════════════ */
-function loadMemory(input) {
-  if (!input.files[0]) return;
-  const box = input.closest('.memory-box');
-  const img = box.querySelector('img');
-  const reader = new FileReader();
-  reader.onload = e => {
-    img.src = e.target.result;
-    img.style.display = 'block';
-    box.querySelector('.memory-cam').style.display = 'none';
-    box.querySelector('span:not(.memory-cam)').style.display = 'none';
-  };
-  reader.readAsDataURL(input.files[0]);
-}
+/* ── MEMORY CARDS ── */
+document.querySelectorAll('.memory-box').forEach(box => {
+  box.addEventListener('click', function() { this.classList.toggle('flipped'); });
+});
 
 
-/* ══════════════════════════════════════════════════════
-   SCROLL ANIMATIONS
-══════════════════════════════════════════════════════ */
-const observer = new IntersectionObserver(entries => {
+/* ── SCROLL ANIMATIONS ── */
+const scrollObserver = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.12 });
 
-document.querySelectorAll('.fade-up, .tl-item').forEach(el => observer.observe(el));
-
- /* my script   */
- document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.memory-box').forEach(function(box) {
-    box.addEventListener('click', function() {
-      this.classList.toggle('flipped');
-    });
-  });
-});
+document.querySelectorAll('.fade-up, .tl-item').forEach(el => scrollObserver.observe(el));
 </script>
 </body>
 </html>
